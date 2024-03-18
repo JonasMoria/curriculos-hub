@@ -1,30 +1,61 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <NavbarVue :menu_icon="menu_icon"/>
+    <div class="body-content">
+      <router-view/>
+    </div>
+  </div>
 </template>
 
+<script>
+import NavbarVue from "./components/Navbar.vue";
+
+export default {
+  components: {
+    NavbarVue
+  },
+  data: function() {
+    return {
+      menu_icon: "/icons/menu.svg"
+    }
+  },
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
 
-nav {
-  padding: 30px;
-}
+  :root {
+    --app-backgorund: #f2f3fa;
+    --app-nav-background:#192734;
+    --text-light: #FDFEFE;
+  }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  .app-font-comic {
+      text-decoration: none;
+      color: var(--text-light);
+      font-family: Comic Sans MS, Comic Sans, cursive;
+  }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .app-icon-white {
+      filter: invert(100%) sepia(87%) saturate(44%) hue-rotate(161deg) brightness(97%) contrast(104%);
+  }
+
+  .item-hide {
+    display: none;
+  }
+
+  body {
+    background-color: var(--app-backgorund);
+  }
+
+  .body-content {
+    max-width: 95%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
 </style>
