@@ -6,7 +6,7 @@
             </router-link>
         </div>
         <div class="box-nav-links">
-            <router-link class="nav-app-links app-font-comic" to="/">
+            <router-link class="nav-app-links app-font-comic" to="/home">
                 Pesquisar
             </router-link>
             <router-link class="nav-app-links app-font-comic" to="/">

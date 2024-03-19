@@ -32,8 +32,16 @@ export default {
   :root {
     --app-backgorund: #f2f3fa;
     --app-nav-background:#192734;
+    --app-green-color: #1ABC9C;
     --text-light: #FDFEFE;
+    --font-cursive: Bradley Hand, cursive;
   }
+
+  textarea:focus, input:focus, select:focus {
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+} 
 
   .app-font-comic {
       text-decoration: none;
