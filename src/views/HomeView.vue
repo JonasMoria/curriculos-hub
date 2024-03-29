@@ -1,11 +1,12 @@
 <template>
   <div class="home-content">
-      <div class="page-title">
-          <h6>Buscar Currículos</h6>
-      </div>
-      <div class="search-filters">
+    <div class="filters-sidenav glow-effect">
+        <div class="filter-title">
+          <p>Adicionar Filtros</p> 
+        </div>
+        <div class="filters-box-insert">
           <select name="select-type-filter" id="select-type-filter" v-model="category" @change="setPlaceHolder()">
-            <option class="select-filter-option" value="">Categoria</option>
+            <option class="select-filter-option" value="">Selecionar Categoria</option>
             <option class="select-filter-option select-space" v-bind:disabled="true"></option>
             <option class="select-filter-option filter-category" value="" v-bind:disabled="true">Localização:</option>
             <option class="select-filter-option" id="opt-city" value="city">Cidade</option>
@@ -27,162 +28,346 @@
           </select>
           <input type="text" v-model="search" :placeholder="placeholder" id="inpt-search-filters">
           <button type="button" id="btn-search-filters" @click="addFilter()">Adicionar</button>
-          <FiltersVue :filters="filters" />
-      </div>
+        </div>
+        <div class="filters-inputed">
+          <div class="filter-topic">
+              <img src="/icons/person_location.svg">
+              <p>Localização</p>
+          </div>
+          <div class="filters-area">
+            <div class="filter-item" v-for="(city, index) in filters.person_cities" :key="index">
+              <img src="/icons/close.svg" @click="deleteFilter(filters.person_cities, index)">
+              <span> {{ city }} </span>
+            </div>
+            <div class="filter-item" v-for="(uf, index) in filters.person_uf" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.person_uf, index)">
+                <span> {{ uf }} </span>
+            </div>
+          </div>
+          <div class="filter-topic">
+            <img src="/icons/education.svg">
+            <p>Educação</p>
+          </div>
+          <div class="filters-area">
+            <div class="filter-item" v-for="(education, index) in filters.education_acronym" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.education_acronym, index)">
+                <span> {{ education }} </span>
+            </div>
+            <div class="filter-item" v-for="(gradutation, index) in filters.education_modality" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.education_modality, index)">
+                <span> {{ gradutation }} </span>
+            </div>
+            <div class="filter-item" v-for="(institution, index) in filters.education_institution" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.education_institution, index)">
+                <span> {{ institution }} </span>
+            </div>
+            <div class="filter-item" v-for="(status, index) in filters.education_status" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.education_status, index)">
+                <span> {{ status }} </span>
+            </div>
+          </div>
+          <div class="filter-topic">
+            <img src="/icons/experience.svg">
+            <p>Experiência</p>
+          </div>
+          <div class="filters-area">
+            <div class="filter-item" v-for="(enterprise, index) in filters.experience_enterprise" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.experience_enterprise, index)">
+                <span> {{ enterprise }} </span>
+            </div>
+            <div class="filter-item" v-for="(office, index) in filters.experience_office" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.experience_office, index)">
+                <span> {{ office }} </span>
+            </div>
+          </div>
+          <div class="filter-topic">
+            <img src="/icons/notes.svg">
+            <p>Outros</p>
+          </div>
+          <div class="filters-area">
+            <div class="filter-item" v-for="(lang, index) in filters.person_langs" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.person_langs, index)">
+                <span> {{ lang }} </span>
+            </div>
+            <div class="filter-item" v-for="(skill, index) in filters.person_skills" :key="index">
+                <img src="/icons/close.svg" @click="deleteFilter(filters.person_skills, index)">
+                <span> {{ skill }} </span>
+            </div>
+          </div>
+        </div>
+        <div class="button-search" @click="getCurriculums()">
+          <img src="/icons/search.svg" alt="">
+        </div>
+    </div>
+    <div class="search-content">
+      <SearchResult :jsonSearch="jsonSearch"/>
+    </div>
   </div>
 </template>
 
 <script>
-import FiltersVue from '../components/Filters.vue';
-import Functions from '../assets/js/Functions.js';
+    import Functions from '../assets/js/Functions.js';
+    import SearchResult from '../components/SearchResult.vue';
+    import Http from '../assets/js/Http.js';
 
-export default {
-  name: 'HomeView',
-  data() {
-    return {
-      search: null,
-      category: '',
-      placeholder: 'Selecione uma categoria...',
+    export default {
+      name: 'HomeView',
+      data() {
+        return {
+          search: null,
+          category: '',
+          placeholder: '...',
+          jsonSearch: [],
 
-      filters: {
-        person_cities : [],
-        person_uf : [],
-        education_acronym: [],
-        education_modality : [],
-        education_institution  : [],
-        education_status : [],
-        experience_enterprise : [],
-        experience_office : [],
-        person_langs : [],
-        person_skills : [],
+          filters: {
+            person_cities : [],
+            person_uf : [],
+            education_acronym: [],
+            education_modality : [],
+            education_institution  : [],
+            education_status : [],
+            experience_enterprise : [],
+            experience_office : [],
+            person_langs : [],
+            person_skills : [],
+          },
+        }
+      },
+
+      components: {
+        SearchResult
+      },
+
+      methods: {
+        setJsonSearch() {
+          this.jsonSearch = search();
+        },
+        addFilter() {
+          if (this.search == '') {
+            return;
+          }
+          if (this.search && (this.search.trim()) == '') {
+            return;
+          }
+      
+          this.filters = Functions.addFiltersToSearch(this.category, this.filters, this.search);
+          this.clearFilters();
+        },
+        deleteFilter(array, index) {
+          array.splice(index, 1);
+        },
+        setPlaceHolder() {
+            this.placeholder = Functions.addPlaceHolderSearch(this.category);
+        },
+        clearFilters() {
+            this.search = '';
+        },
+        getCurriculums() {
+          const response = Http.post('http://localhost/apicurriculos/api/search', this.filters);
+          response.then((json) => {
+              this.jsonSearch = json;
+
+              console.log(json);
+          }).catch((error) => {
+
+          });
+        }
       },
     }
-  },
-  methods: {
-    addFilter() {
-      if (this.search == '') {
-        return;
-      }
-      if (this.search && (this.search.trim()) == '') {
-        return;
-      }
-  
-      this.filters = Functions.addFiltersToSearch(this.category, this.filters, this.search);
-      this.clearFilters();
-    },
-    setPlaceHolder() {
-        this.placeholder = Functions.addPlaceHolderSearch(this.category);
-    },
-    clearFilters() {
-        this.search = '';
-    }
-  },
-  components: {
-    FiltersVue
-  }
-}
 </script>
 
 <style scoped>
-    .home-content {
+  .home-content {
+    position: fixed;
+    margin-top: 3%;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-content: flex-start;
+  }
+
+  .filters-sidenav {
+    width: 17%;
+    margin-left: 1%;
+    border-radius: 5px 5px 0px 0px;
+    background-color: var(--app-white-background);
+  }
+
+  .filter-title {
+    border-left: 3px solid var(--app-green-color);
+    margin-top: 5%;
+    height: 2.5%;
+  }
+  .filter-title p {
+    font-family: var(--font);
+    font-size: 2vh;
+    padding-left: 2%;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .search-content {
+    width: 83%;
+    padding-left: 4%;
+  }
+
+  .filters-box-insert {
+    width: 90%;
+    margin-top: 5%;
+    margin-left: 5%;
+  }
+
+  .filters-box-insert select {
+    width: 100%;
+    padding: 1.5%;
+    border-radius: 5px;
+    margin-bottom: 1.5%;
+    border: 2px solid var(--app-green-color);
+  }
+
+  .filters-box-insert input {
+    width: 100%;
+    margin-bottom: 2%;
+    padding: 1.7%;
+    border-radius: 5px 5px 5px 5px;
+    border: 2px solid var(--app-green-color);
+  }
+
+  .filters-box-insert button {
+    width: 100%;
+    padding: 1%;
+    border-radius: 5px 5px 5px 5px;
+    background-color: transparent;
+    border: 2px solid var(--app-green-color);
+    cursor: pointer;
+
+    color: var(--app-green-color);
+    font-size: 100%;
+    font-family: var(--font);
+  }
+
+  .filters-box-insert button:hover {
+    color: var(--app-white-background);
+    background-color: var(--app-green-color);
+    transition: 0.2s;
+  }
+
+  .filters-inputed {
+    margin-top: 10%;
+  }
+
+  .filter-topic,
+  .filters-area {
+    display: flex;
+    width: 95%;
+    margin-left: 5%;
+    margin-bottom: 5%;
+  }
+
+  .filters-area {
+    flex-wrap: wrap;
+  }
+
+  .filter-type {
+    width: 100%;
+    display: flex;
+  }
+
+  .filter-item {
+    font-size: 0.8em;
+    font-family: var(--font);
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    border: 2px solid var(--app-green-color);
+    
+    margin: 0.5%;
+    white-space: nowrap;
+
+    color: var(--app-nav-background);
+    padding: 0.8%;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .filter-item:hover {
+      transform: scale(1.1);
+      transition: 0.2s;
+  }
+  .filter-item span {
+      margin-right: 10px;
+      margin-left: 10px;
+  }
+  .filter-item img {
+      vertical-align: middle;
+      height: 20px;
+      width: 20px;
+      filter: invert(30%) sepia(57%) saturate(1078%) hue-rotate(325deg) brightness(107%) contrast(103%);
+  }
+
+  .filter-topic p {
+    font-family: var(--font);
+    font-size: 1.7vh;
+    padding-left: 2%;
+    font-weight: 600;
+    letter-spacing: 1px;
+    vertical-align: baseline;
+  }
+
+  .filter-topic img {
+    height: 22px;
+  }
+
+  .select-filter-option {
+    background-color: var(--app-nav-background);
+    color: var(--app-white-background);
+  }
+  .filter-category {
+    color: var(--app-green-color);
+  }
+
+  .button-search {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 1%;
+    padding-top: 2%;
+    border-radius: 10px;
+    background-color: var(--app-nav-background);
+    text-align: center;
+    cursor: pointer;
+    position:absolute;
+    bottom:15%; 
+  }
+  .button-search:hover {
+    border: 2px solid var(--app-green-color);
+  }
+  .button-search img {
+    filter: invert(74%) sepia(12%) saturate(2334%) hue-rotate(116deg) brightness(87%) contrast(82%);
+  }
+
+  @media screen and (max-width: 900px) {
+    .filters-sidenav {
+      margin-left: 0%;
+      width: 100%;
+      border-radius: 0px 5px 0px 0px;
+    }
+    .filter-topic p {
+      font-size: 12px;
+    }
+    .filter-topic img {
+      height: 15px;
+    }
+    .filter-item {
+      font-size: 10px;
+    }
+    .filter-item img {
+      height: 15px;
+    }
+
+    .button-search {
       width: 90%;
       margin-left: 5%;
+      margin-right: 5%;
+      bottom: 8%;
     }
-    .page-title {
-      text-align: center;
-      margin-top: 4%;
-      font-family: var(--font-cursive);
-      font-size: 2em;
-      font-weight: 600;
-      color: #192734;
-    }
-
-    .search-filters {
-      text-align: center;
-      margin-top: 2%;
-      margin-left: 15%;
-      width: 70%;
-      background-color: var(--text-light);
-      border-radius: 10px;
-      box-shadow: #D7DBDD  2px 2px 2px 2px;
-    }
-
-    .search-filters #select-type-filter,
-    .search-filters #inpt-search-filters,
-    .search-filters #btn-search-filters {
-        height: 35px;
-        font-family: var(--font-cursive);
-    }
-
-    .search-filters #select-type-filter {
-      width: 10%;
-      margin-top: 2%;
-      margin-bottom: 2%;
-      border: 2px solid var(--app-green-color);
-      border-radius: 10px 0px 0px 10px;
-      cursor: pointer;
-    }
-
-    .search-filters #inpt-search-filters {
-      width: 30%;
-      border: 2px solid var(--app-green-color);
-      border-left: none;
-      border-right: none;
-    }
-    .search-filters #btn-search-filters {
-      width: 7%;
-      cursor: pointer;
-      border-radius: 0px 10px 10px 0px;
-      border: 2px solid var(--app-green-color);
-      border-left: none;
-      background-color: var(--app-green-color);
-      color: var(--text-light);
-    }
-
-    .select-filter-option {
-      background-color: var(--app-nav-background);
-      color: var(--text-light);
-      font-size: 1em;
-    }
-
-    .filter-category {
-      color: var(--app-green-color);
-      
-    }
-
-    @media screen and (max-width: 900px) {
-      .home-content {
-        width: 100%;
-        margin-left: 0px;
-      }
-      .page-title {
-        font-size: 1.5em;
-        font-weight: 400;
-      }
-
-      .search-filters {
-        margin-left: 1%;
-        width: 98%;
-      }
-
-      .search-filters #select-type-filter {
-        width: 25%;
-        height: 30px;
-      }
-      .search-filters #inpt-search-filters {
-        width: 53%;
-        height: 30px;
-      }
-      .search-filters #btn-search-filters {
-        width: 20%;
-        height: 30px;
-      }
-      .select-filter-option {
-        font-size: 10px;
-      }
-
-      .select-space {
-        display: none;
-      }
-    }
+  }
 </style>

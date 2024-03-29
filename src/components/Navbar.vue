@@ -1,25 +1,25 @@
 <template>
     <div class="navbar">
         <div class="box-app-logo">
-            <router-link class="nav-app-name app-font-comic" to="/home">
+            <router-link class="nav-app-name app-logo" to="/home">
                 <p>CvsHub.com</p>
             </router-link>
         </div>
         <div class="box-nav-links">
-            <router-link class="nav-app-links app-font-comic" to="/home">
+            <router-link class="nav-app-links app-font-navbar" to="/home">
                 Pesquisar
             </router-link>
-            <router-link class="nav-app-links app-font-comic" to="/">
+            <router-link class="nav-app-links app-font-navbar" to="/">
                 Sobre
             </router-link>
-            <router-link class="nav-app-links app-font-comic" to="/">
+            <router-link class="nav-app-links app-font-navbar" to="/">
                 Login
             </router-link>
         </div>
     </div>
     <div class="navbar-responsive">
         <div class="box-app-logo">
-            <router-link class="nav-app-name app-font-comic" to="/">
+            <router-link class="nav-app-name app-font-navbar" to="/">
                 <p>CvsHub.com</p>
             </router-link>
             <div class="btn-open-nav app-icon-white" @click="openNavbar()" v-bind="isModalOpen">
@@ -27,13 +27,13 @@
             </div>
         </div>
         <div class="nav-list-links" id="nav-list-links">
-            <router-link class="responsive-nav-links app-font-comic" to="/">
+            <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Pesquisar
             </router-link>
-            <router-link class="responsive-nav-links app-font-comic" to="/">
+            <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Sobre
             </router-link>
-            <router-link class="responsive-nav-links app-font-comic" to="/">
+            <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Login
             </router-link>
         </div>
@@ -75,13 +75,11 @@
     }
     .navbar {
         background-color: var(--app-nav-background);
-        padding: 1%;
-        margin-top: 2%;
-        width: 80%;
-        margin-left: 10%;
-        border-radius: 10px;
+        padding: 0.6%;
+        width: 100%;
         display: flex;
         justify-content:left;
+        box-shadow: 1px 1px 1px 1px gray;
     }
     .nav-app-name {
         font-weight: 700;
@@ -90,6 +88,7 @@
 
     .box-app-logo {
         width: 10%;
+        padding-left: 2%;
     }
     .box-nav-links {
         width: 90%;
@@ -97,18 +96,14 @@
         justify-content: flex-end;
     }
     .nav-app-links {
-        width: 10%;
+        width: 12%;
         text-align: center;
+        align-self: flex-end;
     }
-    .nav-app-links:after {
-        display:block;
-        content: '';
-        border-bottom: solid 3px #1ABC9C;  
-        transform: scaleX(0);  
-        transition: transform 200ms ease-in-out;
-    }
-    .nav-app-links:hover:after {
-        transform: scaleX(1);
+    .nav-app-links:hover {
+        border: solid 2px #1ABC9C;
+        border-radius: 10px;
+        padding: 0.1%;
     }
 
     @media screen and (max-width: 900px) {
@@ -117,7 +112,6 @@
         }
         .navbar-responsive {
             display: block;
-            width: 100%;
             font-size: 0.8em;
             padding: 1.3%;
             background-color: var(--app-nav-background);
