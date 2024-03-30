@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content">
         <section class="default-background" v-if="search_status === 0">
             <div class="image-support">
                 <span>
@@ -146,8 +146,25 @@
     }
 
     @media screen and (max-width: 900px) {
+        .content {
+            margin-left: 15%;
+            width: 90%;
+        }
         .cv-card {
-            width: 100%;
+            width: 45%;
+            margin: 2%;
+            margin-bottom: 6%;
+            font-size: 14px;
+
+        }
+        .image-support {
+            margin-top: 5%;
+            text-align: center;
+            margin-left: 10%;
+        }
+
+        .image-support img {
+            height: 10vh;
         }
     }
 </style>

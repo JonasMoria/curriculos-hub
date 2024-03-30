@@ -1,10 +1,13 @@
 <template>
   <div class="home-content">
-    <div class="filters-sidenav glow-effect">
-        <div class="filter-title">
+    <div class="filters-sidenav  glow-effect" id="sidenav">
+        <div class="btn-close-sidenav" @click="sideNavManager()">
+          <img src="/icons/menu.svg">
+        </div>
+        <div class="filter-title" id="filter-title" >
           <p>Adicionar Filtros</p> 
         </div>
-        <div class="filters-box-insert">
+        <div class="filters-box-insert" id="filters-box-insert">
           <select name="select-type-filter" id="select-type-filter" v-model="category" @change="setPlaceHolder()">
             <option class="select-filter-option" value="">Selecionar Categoria</option>
             <option class="select-filter-option select-space" v-bind:disabled="true"></option>
@@ -29,7 +32,7 @@
           <input type="text" v-model="search" :placeholder="placeholder" id="inpt-search-filters">
           <button type="button" id="btn-search-filters" @click="addFilter()">Adicionar</button>
         </div>
-        <div class="filters-inputed">
+        <div class="filters-inputed" id="filters-inputed">
           <div class="filter-topic">
               <img src="/icons/person_location.svg">
               <p>Localização</p>
@@ -95,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div class="button-search" @click="getCurriculums()">
+        <div class="button-search" id="button-search" @click="getCurriculums()">
           <img src="/icons/search.svg" alt="">
         </div>
     </div>
@@ -114,6 +117,8 @@
       name: 'HomeView',
       data() {
         return {
+          el: '#app',
+          sidenav_hide: true,
           search: null,
           category: '',
           placeholder: '...',
@@ -140,6 +145,17 @@
       },
 
       methods: {
+        sideNavManager() {
+          if (this.sidenav_hide == false) {
+            Functions.hideSideNav(this.$el);
+            this.sidenav_hide = true;
+            return;
+          }
+
+          Functions.showSideNav(this.$el);
+          this.sidenav_hide = false
+          return;
+        },
         setJsonSearch() {
           this.json_search = search();
         },
@@ -203,6 +219,10 @@
 
     display: flex;
     align-content: flex-start;
+  }
+
+  .btn-close-sidenav {
+    display: none;
   }
 
   .filters-sidenav {
@@ -366,9 +386,16 @@
 
   @media screen and (max-width: 900px) {
     .filters-sidenav {
+      width: 10%;
+      height: 100%;
+      position: fixed;
+      z-index: 1;
       margin-left: 0%;
-      width: 100%;
       border-radius: 0px 5px 0px 0px;
+      transition: 0.2s;
+    }
+    .search-content {
+      width: 100%;
     }
     .filter-topic p {
       font-size: 12px;
@@ -382,12 +409,24 @@
     .filter-item img {
       height: 15px;
     }
-
     .button-search {
       width: 90%;
       margin-left: 5%;
       margin-right: 5%;
       bottom: 8%;
+    }
+    .btn-close-sidenav {
+      display: block;
+      width: 100%;
+      height: 25px;
+      text-align: right;
+      padding-right: 4%;
+    }
+    .filters-box-insert,
+    .filters-inputed,
+    .button-search,
+    .filter-title {
+      display: none;
     }
   }
 </style>

@@ -79,9 +79,40 @@ const functions = (() => {
         return placeholder;
     }
 
+    function getSideNavItens(obj) {
+        return {
+          sideNav : obj.querySelector('#sidenav').style,
+          title : obj.querySelector('#filter-title').style,
+          filters : obj.querySelector('#filters-box-insert').style,
+          filtersInpt : obj.querySelector('#filters-inputed').style,
+          btnSearch : obj.querySelector('#button-search').style,
+        }
+    }
+
+    function showSideNav(obj) {
+      let item = getSideNavItens(obj);
+
+      item.sideNav.width = '60%';
+      item.title.display = 'block';
+      item.filters.display = 'block';
+      item.filtersInpt.display = 'block';
+      item.btnSearch.display = 'block';
+    }
+
+    function hideSideNav(obj) {
+      let item = getSideNavItens(obj);
+
+      item.sideNav.width = '10%';
+      item.title.display = 'none';
+      item.filters.display = 'none';
+      item.filtersInpt.display = 'none';
+      item.btnSearch.display = 'none';
+    }
     return {
         addFiltersToSearch,
-        addPlaceHolderSearch
+        addPlaceHolderSearch,
+        showSideNav,
+        hideSideNav
     }
 })();
 

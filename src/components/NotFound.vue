@@ -29,4 +29,16 @@
         font-size: 2vh;
         color: #A6ACAF;
     }
+
+    @media screen and (max-width:900px) {
+        .image-error {
+            margin-top: 5%;
+            text-align: center;
+            margin-left: 10%;
+        }
+
+        .image-error img {
+            height: 10vh;
+        }
+    }
 </style>
