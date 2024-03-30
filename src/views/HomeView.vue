@@ -100,7 +100,7 @@
         </div>
     </div>
     <div class="search-content">
-      <SearchResult :jsonSearch="jsonSearch"/>
+      <SearchResult :json_search="json_search" :search_status="search_status"/>
     </div>
   </div>
 </template>
@@ -117,7 +117,8 @@
           search: null,
           category: '',
           placeholder: '...',
-          jsonSearch: [],
+          json_search: [],
+          search_status: 0,
 
           filters: {
             person_cities : [],
@@ -140,7 +141,7 @@
 
       methods: {
         setJsonSearch() {
-          this.jsonSearch = search();
+          this.json_search = search();
         },
         addFilter() {
           if (this.search == '') {
@@ -163,13 +164,30 @@
             this.search = '';
         },
         getCurriculums() {
-          const response = Http.post('http://localhost/apicurriculos/api/search', this.filters);
+          this.search_status = 1;
+
+          const response = Http.post(Http.urls.search, this.filters);
           response.then((json) => {
-              this.jsonSearch = json;
+              this.json_search = json;
 
-              console.log(json);
+              switch (json.status) {
+                case Http.codes.ok:
+                  this.search_status = 2;
+                break;
+                case Http.codes.not_found:
+                case Http.codes.bad_request:
+                  this.search_status = 3;
+                break;
+                case Http.codes.error:
+                  this.search_status = 4;
+                break
+                default:
+                  this.search_status = 0;
+                break;
+              }
+
           }).catch((error) => {
-
+            this.search_status = 4;
           });
         }
       },
@@ -209,6 +227,8 @@
   .search-content {
     width: 83%;
     padding-left: 4%;
+    padding-right: 4%;
+    overflow-y: auto;
   }
 
   .filters-box-insert {

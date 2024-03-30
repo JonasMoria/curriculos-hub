@@ -6,6 +6,17 @@ const request = (() => {
     const OK = 200;
     const NOT_FOUND = 404;
 
+    var urls = {
+        search : 'http://localhost/apicurriculos/api/search'
+    }
+
+    var codes = {
+        ok : 200,
+        not_found : 404,
+        bad_request: 400,
+        error: 500,
+    }
+
     function get(url) {
 
     }
@@ -40,6 +51,8 @@ const request = (() => {
         post,
         del,
         put,
+        urls,
+        codes,
     }
 })();
 
