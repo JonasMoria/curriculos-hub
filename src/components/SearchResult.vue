@@ -36,7 +36,7 @@
             </div>
         </section>
         <section class="default-background" v-if="search_status == 3">
-            <NotFound />
+            <NotFound :msg_error="msg_notfound"/>
         </section>
         <section v-if="search_status == 4">
             <ServerProblem />
@@ -48,6 +48,7 @@
     import LoadingEffect from '../components/LoadingEffect.vue';
     import NotFound from '../components/NotFound.vue';
     import ServerProblem from '../components/ServerProblem.vue';
+    import Http from '../assets/js/Http.js';
 
     export default {
         name: 'SearchResult',
@@ -56,12 +57,13 @@
 
         data() {
             return {
+                msg_notfound: 'Não foi possível encontrar currículos com estes filtros.',
             }
         },
 
         methods: {
             viewCv(id) {
-                alert(id);
+                window.location.href = `${Http.app_url}/view?cv=${id}`;
             }
         }
     }

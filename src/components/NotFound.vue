@@ -2,14 +2,15 @@
     <div class="image-error">
         <span>
             <img src="/icons/notfound.svg" alt=""><br>
-            <b>Ops!</b> Não foram encotrados dados com estes filtros.
+            <b>Ops!</b> {{ msg_error }}
         </span>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'NotFound'
+        name: 'NotFound',
+        props: ['msg_error'],
     }
 </script>
 

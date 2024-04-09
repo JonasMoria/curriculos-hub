@@ -6,8 +6,11 @@ const request = (() => {
     const OK = 200;
     const NOT_FOUND = 404;
 
+    const app_url = 'http://localhost:8080';
+
     var urls = {
-        search : 'http://localhost/apicurriculos/api/search'
+        search : 'http://localhost/apicurriculos/api/search',
+        getCv: 'http://localhost/apicurriculos/api/view',
     }
 
     var codes = {
@@ -17,8 +20,18 @@ const request = (() => {
         error: 500,
     }
 
-    function get(url) {
+    async function get(url) {
+        const request = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Access-Control-Request-Headers": "Content-Type",
+                "Content-Type": "application/json",
+            },
+        });
 
+        const response = request.json();
+
+        return response;
     }
 
     async function post(url, data) {
@@ -46,13 +59,21 @@ const request = (() => {
 
     }
 
+    function getUrlParam(param) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(param);
+    }
+
     return {
         get,
         post,
         del,
         put,
+        getUrlParam,
+
         urls,
         codes,
+        app_url
     }
 })();
 
