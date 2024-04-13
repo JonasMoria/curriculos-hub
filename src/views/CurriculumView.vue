@@ -31,9 +31,7 @@
                     </p>
                     <div v-if="curriculum.personal_contact.phones">
                         <p class="person-phones">
-                            <img src="/icons/phone.svg"> {{ curriculum.personal_contact.phones.principal }}
-                        </p>
-                        <p class="div-phone-second">
+                            <img src="/icons/phone.svg"> {{ curriculum.personal_contact.phones.principal }} <br>
                             <img src="/icons/phone.svg"> {{ curriculum.personal_contact.phones.secondary }}
                         </p>
                     </div>
@@ -41,16 +39,16 @@
             </div>
             <div class="card-full-div cv-cards" v-if="curriculum.personal_contact.social_networks">
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.facebook" v-if="curriculum.personal_contact.social_networks.facebook">
-                    <img src="icons/facebook.png" height="30px">
+                    <img src="icons/facebook.png" class="social-nw-img">
                 </a>
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.instagram" v-if="curriculum.personal_contact.social_networks.instagram">
-                    <img src="icons/instagram.png" height="30px">
+                    <img src="icons/instagram.png" class="social-nw-img">
                 </a>
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.linkedIn" v-if="curriculum.personal_contact.social_networks.linkedIn">
-                    <img src="icons/linkedin.png" height="35px">
+                    <img src="icons/linkedin.png" class="social-nw-img-2">
                 </a>
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.site" v-if="curriculum.personal_contact.social_networks.site">
-                    <img src="icons/site.png" height="30px">
+                    <img src="icons/site.png" class="social-nw-img">
                 </a>
             </div>
             <div class="person-education cv-cards" v-if="curriculum.personal_education">
@@ -78,12 +76,14 @@
                     {{ skill }}
                 </p>
             </div>
+            <div id="qrcode"></div>
         </section>
     </section>
 </template>
 
 <script>
     import Http from '../assets/js/Http.js';
+    import Functions from '../assets/js/Functions';
     import LoadingEffect from '../components/LoadingEffect.vue';
     import NotFound from '../components/NotFound.vue';
     import ServerProblem from '../components/ServerProblem.vue';
@@ -111,14 +111,30 @@
                     if (json.status == Http.codes.ok) {
                         this.search_status = 2;
                         this.curriculum = json.data;
+                        this.setMasks();
                     }
                     if (json.status == Http.codes.not_found) {
                         this.search_status = 3;
                     }
-                    console.log(json.data);
+
                 }).catch((error) => {
                     this.search_status = 4;
                 });
+            },
+            setMasks() {
+                this.curriculum.personal_info.birthdate = Functions.convertDataToBrazil(this.curriculum.personal_info.birthdate);
+                this.curriculum.personal_contact.phones.principal = Functions.mask(this.curriculum.personal_contact.phones.principal, '+## (##) #########');
+                this.curriculum.personal_contact.phones.secondary = Functions.mask(this.curriculum.personal_contact.phones.secondary, '+## (##) #########');
+                
+                for (let index in this.curriculum.personal_education) {
+                    this.curriculum.personal_education[index].init = Functions.convertDataToBrazil(this.curriculum.personal_education[index].init);
+                    this.curriculum.personal_education[index].finish = Functions.convertDataToBrazil(this.curriculum.personal_education[index].finish);
+                }
+
+                for (let index in this.curriculum.personal_experience) {
+                    this.curriculum.personal_experience[index].init = Functions.convertDataToBrazil(this.curriculum.personal_experience[index].init);
+                    this.curriculum.personal_experience[index].finish = Functions.convertDataToBrazil(this.curriculum.personal_experience[index].finish);
+                }
             }
         },
 
@@ -183,6 +199,13 @@
         margin-right: 1%;
     }
 
+    .social-nw-img {
+        height: 30px;
+    }
+    .social-nw-img-2 {
+        height: 35px;
+    }
+
     .card-person-info,
     .card-person-contacts {
         width: 47%;
@@ -220,5 +243,43 @@
         display: inline-block;
         margin: 1%;
         text-align: center;
+    }
+
+    @media screen and (max-width: 900px) {
+        .page-content {
+            width: 95%;
+            margin-left: 2.5%;
+            margin-top: 2%;
+        }
+        .cv-content {
+            border-left: 5px solid var(--app-nav-background);
+        }
+        .container-cards {
+            display: block;
+        }
+        .div-person-name {
+            font-size: 13px;
+            margin-bottom: 4%;
+        }
+        .cv-cards {
+            width: 97%;
+        }
+        .cv-cards p {
+            font-size: 10px;
+        }
+        .cv-cards p img {
+            height: 16px;
+        }
+        .social-nw-img {
+            height: 16px;
+        }
+        .social-nw-img-2 {
+            height: 17px;
+        }
+        .experience-card,
+        .education-card {
+            margin-bottom: 7%;
+            border-left: 2px solid var(--app-green-color);
+        }
     }
 </style>

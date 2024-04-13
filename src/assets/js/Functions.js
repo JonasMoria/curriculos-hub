@@ -108,9 +108,43 @@ const functions = (() => {
       item.filtersInpt.display = 'none';
       item.btnSearch.display = 'none';
     }
+
+    function convertDataToBrazil(date) {
+      if (!date) {
+        return '';
+      }
+
+      if (date == '0000-00-00') {
+        return 'o momento';
+      }
+
+      return date.split('-').reverse().join('/');
+    }
+
+    function mask(string, mask) {
+      let maskared = '';
+      let k = 0;
+     
+      for (let i = 0; i <= mask.length; i++) {
+          if (mask[i] == '#') {
+              if (string[k]) {
+                  maskared += string[k++];
+              }
+          } else {
+              if (mask[i]) {
+                  maskared += mask[i];
+              }
+          }
+      }
+     
+      return maskared;
+  }
+  
     return {
         addFiltersToSearch,
         addPlaceHolderSearch,
+        convertDataToBrazil,
+        mask,
         showSideNav,
         hideSideNav
     }
