@@ -1,12 +1,12 @@
 <template>
     <div class="navbar">
         <div class="box-app-logo">
-            <router-link class="nav-app-name app-logo" to="/home">
+            <router-link class="nav-app-name app-logo" to="/">
                 <p>CvsHub.com</p>
             </router-link>
         </div>
         <div class="box-nav-links">
-            <router-link class="nav-app-links app-font-navbar" to="/home">
+            <router-link class="nav-app-links app-font-navbar" to="/">
                 Pesquisar
             </router-link>
             <router-link class="nav-app-links app-font-navbar" to="/">

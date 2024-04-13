@@ -64,11 +64,16 @@ const request = (() => {
         return params.get(param);
     }
 
+    function getPageUrl() {
+        return window.location.href;
+    }
+
     return {
         get,
         post,
         del,
         put,
+        getPageUrl,
         getUrlParam,
 
         urls,

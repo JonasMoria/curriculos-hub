@@ -76,7 +76,9 @@
                     {{ skill }}
                 </p>
             </div>
-            <div id="qrcode"></div>
+            <div id="qrcode">
+                <QrCodeVue :value="qrcode_link" :size="qr_code_size"/>
+            </div>
         </section>
     </section>
 </template>
@@ -87,16 +89,20 @@
     import LoadingEffect from '../components/LoadingEffect.vue';
     import NotFound from '../components/NotFound.vue';
     import ServerProblem from '../components/ServerProblem.vue';
+    import QrCodeVue from 'qrcode.vue';
 
     export default {
         name: 'CurriculumView',
-        components: {LoadingEffect, NotFound, ServerProblem},
+        components: {LoadingEffect, NotFound, ServerProblem, QrCodeVue},
         data() {
             return {
                 curriculum_id : 0,
                 search_status: 0,
                 msg_notfound: 'Currículo não encontrado.',
                 curriculum: [],
+
+                qrcode_link: Http.getPageUrl(),
+                qr_code_size: 100,
             }
         },
 
@@ -111,6 +117,7 @@
                     if (json.status == Http.codes.ok) {
                         this.search_status = 2;
                         this.curriculum = json.data;
+                        this.qr_code_size = this.setSizeQrCode();
                         this.setMasks();
                     }
                     if (json.status == Http.codes.not_found) {
@@ -120,6 +127,14 @@
                 }).catch((error) => {
                     this.search_status = 4;
                 });
+            },
+            setSizeQrCode() {
+                const windowSize = window.innerWidth;
+                if (windowSize <= 900) {
+                    return 30;
+                }
+
+                return 100;
             },
             setMasks() {
                 this.curriculum.personal_info.birthdate = Functions.convertDataToBrazil(this.curriculum.personal_info.birthdate);
@@ -159,7 +174,7 @@
     .cv-content {
         width: 100%;
         padding: 2%;
-        border-left: 15px solid var(--app-nav-background);
+        border-left: 12px solid var(--app-nav-background);
         background-color: var(--app-white-background);
         border-radius: 8px;
     }
@@ -233,9 +248,9 @@
     .experience-card,
     .education-card {
         width: 97%;
-        padding-left: 2%;
+        padding-left: 1%;
         margin-bottom: 5%;
-        border-left: 10px solid var(--app-green-color);
+        border-left: 6px solid var(--app-green-color);
         border-radius: 6px;
     }
 
@@ -243,6 +258,10 @@
         display: inline-block;
         margin: 1%;
         text-align: center;
+    }
+
+    #qrcode {
+        margin-left: 2%;
     }
 
     @media screen and (max-width: 900px) {
@@ -280,6 +299,11 @@
         .education-card {
             margin-bottom: 7%;
             border-left: 2px solid var(--app-green-color);
+        }
+        #qrcode {
+            text-align: center;
+            margin-top: 6%;
+            margin-bottom: 2%;
         }
     }
 </style>

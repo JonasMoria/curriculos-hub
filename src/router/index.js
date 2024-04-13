@@ -4,7 +4,7 @@ import CurriculumView from '../views/CurriculumView.vue';
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: HomeView
   },
