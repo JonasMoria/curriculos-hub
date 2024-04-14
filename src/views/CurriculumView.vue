@@ -154,7 +154,7 @@
         },
 
         mounted() {
-            this.curriculum_id = Http.getUrlParam('id');
+            this.curriculum_id = Http.getUrlParam();
             if (this.curriculum_id) {
                 this.getCurriculum();
             } else {

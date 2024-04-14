@@ -12,6 +12,7 @@ const request = (() => {
         search: 'http://localhost/apicurriculos/api/search',
         getCv: 'http://localhost/apicurriculos/api/view',
         register: 'http://localhost/apicurriculos/api/register',
+        login: 'http://localhost/apicurriculos/api/login',
     }
 
     var codes = {
@@ -19,6 +20,7 @@ const request = (() => {
         created: 201,
         not_found : 404,
         bad_request: 400,
+        unauthorized: 401,
         error: 500,
     }
 
@@ -61,7 +63,7 @@ const request = (() => {
 
     }
 
-    function getUrlParam(param) {
+    function getUrlParam() {
         const urlPath = window.location.pathname;
         const urlSplit = urlPath.split('/');
 
@@ -72,6 +74,10 @@ const request = (() => {
         return window.location.href;
     }
 
+    function redirect(path) {
+        window.location.href = app_url + path;
+    }
+
     return {
         get,
         post,
@@ -79,6 +85,7 @@ const request = (() => {
         put,
         getPageUrl,
         getUrlParam,
+        redirect,
 
         urls,
         codes,

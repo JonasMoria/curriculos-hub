@@ -21,11 +21,11 @@
             <form action="#">
                 <h1>Entrar</h1>
                 <div class="box-error" v-if="loginError">
-                    <span>{{ loginError }}</span>
+                    <span><b>Ops!</b> {{ loginError }}</span>
                 </div>
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Senha" />
-                <button type="button" class="buttons-login">login</button>
+                <input type="email" placeholder="Email" v-model="login_data.email" />
+                <input type="password" placeholder="Senha" v-model="login_data.pass" />
+                <button type="button" class="buttons-login" id="btn-login" @click="login()">Login</button>
                 <span class="btn-mobile-register" @click="showRegister()">Quero realizar meu cadastro!</span>
             </form>
         </div>
@@ -63,6 +63,11 @@
 					email: '',
 					password: '',
 					repeat_pass: '',
+				},
+
+				login_data: {
+					email: '',
+					pass: '',
 				}
             }
         },
@@ -85,6 +90,31 @@
 				btn.innerHTML = `<div class="loader"></div>`;
 				return;
 			},
+			login() {
+				this.loginError = '';
+				this.showLoadingButton('btn-login');
+
+				const response = Http.post(Http.urls.login, this.login_data);
+				response.then((json) => {
+					this.showLoadingButton('btn-login', 'Login');
+
+					if (json.status == Http.codes.ok) {
+						Functions.setSessionCookie('login_cookie', json.data[0]);
+						Http.redirect('/user/home');
+						return;
+					} else if (json.status == Http.codes.unauthorized) {
+						this.loginError = json.message;
+						return;
+					} else {
+						this.loginError = 'Não foi possível logar agora, por favor, tente novamente mais tarde.';
+						return;	
+					}
+				}).catch((error) => {
+					this.showLoadingButton('btn-login', 'Login');
+					this.registerError = 'Não foi possível logar agora, por favor, tente novamente mais tarde.';
+				});
+
+			},
 			register() {
 				this.registerError = '';
 				this.showLoadingButton('btn-register');
@@ -98,24 +128,30 @@
 
 				const response = Http.post(Http.urls.register, this.register_data);
 				response.then((json) => {
+					this.showLoadingButton('btn-register', 'Cadastrar');
+
 					if (json.status == Http.codes.created) {
 						this.registerSuccess = 'Você foi cadastrado em nossa plataforma! Por favor, realize o Login.';
-						this.showLoadingButton('btn-register', 'Cadastrar');
 						return;
 					} else if (json.status == Http.codes.bad_request) {
 						this.registerError = json.message;
-						this.showLoadingButton('btn-register', 'Cadastrar');
 						return;
 					} else {
 						this.registerError = 'Não foi possível cadastrar agora, por favor, tente novamente mais tarde.';
-						this.showLoadingButton('btn-register', 'Cadastrar');
 						return;	
 					}
 				}).catch((error) => {
+					this.showLoadingButton('btn-register', 'Cadastrar');
 					this.registerError = 'Não foi possível cadastrar agora, por favor, tente novamente mais tarde.';
 				});
 			}
-        }
+        },
+		mounted() {
+			const session_cookie = Functions.getSessionCookie('login_cookie');
+			if (session_cookie) {
+				Http.redirect('/user/home');
+			}
+		}
     }
 </script>
 

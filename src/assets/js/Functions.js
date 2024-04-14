@@ -183,6 +183,14 @@ const functions = (() => {
         isValid: true
       }
     }
+
+    function setSessionCookie(name, value) {
+      localStorage.setItem(name, value);
+    }
+
+    function getSessionCookie(name) {
+      return localStorage.getItem(name);
+    }
   
     return {
         addFiltersToSearch,
@@ -192,6 +200,8 @@ const functions = (() => {
         showSideNav,
         hideSideNav,
         validateRegister,
+        setSessionCookie,
+        getSessionCookie,
     }
 })();
 
