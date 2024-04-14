@@ -9,12 +9,14 @@ const request = (() => {
     const app_url = 'http://localhost:8080';
 
     var urls = {
-        search : 'http://localhost/apicurriculos/api/search',
+        search: 'http://localhost/apicurriculos/api/search',
         getCv: 'http://localhost/apicurriculos/api/view',
+        register: 'http://localhost/apicurriculos/api/register',
     }
 
     var codes = {
         ok : 200,
+        created: 201,
         not_found : 404,
         bad_request: 400,
         error: 500,
@@ -60,8 +62,10 @@ const request = (() => {
     }
 
     function getUrlParam(param) {
-        const params = new URLSearchParams(window.location.search);
-        return params.get(param);
+        const urlPath = window.location.pathname;
+        const urlSplit = urlPath.split('/');
+
+        return urlSplit.at(-1);
     }
 
     function getPageUrl() {

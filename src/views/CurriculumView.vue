@@ -39,16 +39,16 @@
             </div>
             <div class="card-full-div cv-cards" v-if="curriculum.personal_contact.social_networks">
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.facebook" v-if="curriculum.personal_contact.social_networks.facebook">
-                    <img src="icons/facebook.png" class="social-nw-img">
+                    <img src="/icons/facebook.png" class="social-nw-img">
                 </a>
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.instagram" v-if="curriculum.personal_contact.social_networks.instagram">
-                    <img src="icons/instagram.png" class="social-nw-img">
+                    <img src="/icons/instagram.png" class="social-nw-img">
                 </a>
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.linkedIn" v-if="curriculum.personal_contact.social_networks.linkedIn">
-                    <img src="icons/linkedin.png" class="social-nw-img-2">
+                    <img src="/icons/linkedin.png" class="social-nw-img-2">
                 </a>
                 <a target="_blank" :href="curriculum.personal_contact.social_networks.site" v-if="curriculum.personal_contact.social_networks.site">
-                    <img src="icons/site.png" class="social-nw-img">
+                    <img src="/icons/site.png" class="social-nw-img">
                 </a>
             </div>
             <div class="person-education cv-cards" v-if="curriculum.personal_education">
@@ -154,7 +154,7 @@
         },
 
         mounted() {
-            this.curriculum_id = Http.getUrlParam('cv');
+            this.curriculum_id = Http.getUrlParam('id');
             if (this.curriculum_id) {
                 this.getCurriculum();
             } else {

@@ -138,7 +138,51 @@ const functions = (() => {
       }
      
       return maskared;
-  }
+    }
+
+    function validateEmail(email) {
+      let regex = /^[a-z0-9.]+@[a-z]+\.[a-z]{2,3}$/;
+      return regex.test(email);
+    }
+
+    function validateRegister(register_data) {
+      const user_name = register_data.name;
+      const user_email = register_data.email;
+      const user_pass = register_data.password;
+      const repeat_pass = register_data.repeat_pass;
+
+      if (!user_name.trim()) {
+        return {
+          isValid: false,
+          msg_error: 'Nome não pode ser vazio.'
+        }
+      }
+
+      if (!validateEmail(user_email)) {
+        return {
+          isValid: false,
+          msg_error: 'Email inválido.'
+        }
+      }
+
+      if (!user_pass.trim() || !repeat_pass.trim()) {
+        return {
+          isValid: false,
+          msg_error: 'Senhas inválidas.'
+        }
+      }
+  
+      if (user_pass != repeat_pass) {
+        return {
+          isValid: false,
+          msg_error: 'Senhas divergentes.'
+        }
+      }
+
+      return {
+        isValid: true
+      }
+    }
   
     return {
         addFiltersToSearch,
@@ -146,7 +190,8 @@ const functions = (() => {
         convertDataToBrazil,
         mask,
         showSideNav,
-        hideSideNav
+        hideSideNav,
+        validateRegister,
     }
 })();
 

@@ -12,7 +12,7 @@
             <router-link class="nav-app-links app-font-navbar" to="/">
                 Sobre
             </router-link>
-            <router-link class="nav-app-links app-font-navbar" to="/">
+            <router-link class="nav-app-links app-font-navbar" to="/login">
                 Login
             </router-link>
         </div>

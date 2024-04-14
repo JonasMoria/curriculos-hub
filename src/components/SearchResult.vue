@@ -63,7 +63,7 @@
 
         methods: {
             viewCv(id) {
-                window.location.href = `${Http.app_url}/view?cv=${id}`;
+                window.location.href = `${Http.app_url}/view/${id}`;
             }
         }
     }
