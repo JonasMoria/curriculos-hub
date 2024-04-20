@@ -191,6 +191,15 @@ const functions = (() => {
     function getSessionCookie(name) {
       return localStorage.getItem(name);
     }
+
+    function getUser() {
+      const token = getSessionCookie('login_cookie');
+      if (token) {
+        return JSON.parse(atob(token.split('.')[1]));
+      }
+
+      return [];
+    }
   
     return {
         addFiltersToSearch,
@@ -202,6 +211,7 @@ const functions = (() => {
         validateRegister,
         setSessionCookie,
         getSessionCookie,
+        getUser,
     }
 })();
 

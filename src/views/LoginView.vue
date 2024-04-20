@@ -146,7 +146,7 @@
 				});
 			}
         },
-		mounted() {
+		beforeCreate() {
 			const session_cookie = Functions.getSessionCookie('login_cookie');
 			if (session_cookie) {
 				Http.redirect('/user/home');

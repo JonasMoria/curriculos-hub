@@ -9,9 +9,6 @@
             <router-link class="nav-app-links app-font-navbar" to="/">
                 Pesquisar
             </router-link>
-            <router-link class="nav-app-links app-font-navbar" to="/">
-                Sobre
-            </router-link>
             <router-link class="nav-app-links app-font-navbar" to="/login">
                 Login
             </router-link>
@@ -29,9 +26,6 @@
         <div class="nav-list-links" id="nav-list-links">
             <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Pesquisar
-            </router-link>
-            <router-link class="responsive-nav-links app-font-navbar" to="/">
-                Sobre
             </router-link>
             <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Login
@@ -104,6 +98,17 @@
         border: solid 2px #1ABC9C;
         border-radius: 10px;
         padding: 0.1%;
+    }
+    .app-logo {
+        text-decoration: none;
+        color: var(--text-light);
+        font-family: Comic Sans MS, Comic Sans, cursive;
+    }
+
+    .app-font-navbar {
+        text-decoration: none;
+        color: var(--text-light);
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     @media screen and (max-width: 900px) {

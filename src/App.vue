@@ -48,20 +48,9 @@ export default {
     border: 0 none;
     outline: 0;
   } 
-  .app-logo {
-    text-decoration: none;
-    color: var(--text-light);
-    font-family: Comic Sans MS, Comic Sans, cursive;
-  }
-
-  .app-font-navbar {
-      text-decoration: none;
-      color: var(--text-light);
-      font-family: Arial, Helvetica, sans-serif;
-  }
 
   .app-icon-white {
-      filter: invert(100%) sepia(87%) saturate(44%) hue-rotate(161deg) brightness(97%) contrast(104%);
+    filter: invert(100%) sepia(87%) saturate(44%) hue-rotate(161deg) brightness(97%) contrast(104%);
   }
 
   .item-hide {
