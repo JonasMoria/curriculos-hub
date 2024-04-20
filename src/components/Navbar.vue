@@ -9,7 +9,21 @@
             <router-link class="nav-app-links app-font-navbar" to="/">
                 Pesquisar
             </router-link>
-            <router-link class="nav-app-links app-font-navbar" to="/login">
+            <div class="nav-app-links app-font-navbar" v-if="isLogged" @click="showDropDown = !showDropDown">
+                Meu Perfil
+                <div class="dropdown" id="dropdown" v-show="showDropDown">
+                    <div @click="goTo('/user/home')">
+                        <img src="/icons/person-info.svg">Perfil
+                    </div>
+                    <div @click="goTo('')">
+                        <img src="/icons/cv.svg">Curriculos
+                    </div>
+                    <div @click="finishSession()">
+                        <img src="/icons/close.svg">Encerrar
+                    </div>
+                </div>
+            </div>
+            <router-link class="nav-app-links app-font-navbar" to="/login" v-if="!isLogged">
                 Login
             </router-link>
         </div>
@@ -27,7 +41,10 @@
             <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Pesquisar
             </router-link>
-            <router-link class="responsive-nav-links app-font-navbar" to="/">
+            <router-link class="nav-app-links app-font-navbar" to="/" v-if="isLogged">
+                Meu Perfil
+            </router-link>
+            <router-link class="responsive-nav-links app-font-navbar" to="/login" v-if="!isLogged">
                 Login
             </router-link>
         </div>
@@ -35,14 +52,20 @@
 </template>
 
 <script>
+    import Functions from '../assets/js/Functions';
+    import Http from '../assets/js/Http';
+
     export default {
         name: 'Navbar',
         props: ["menu_icon", "alt"],
         data() {
             return {
-                isModalOpen: false
+                isModalOpen: false,
+                isLogged: false,
+                showDropDown: false,
             }
         },
+
         methods: {
             openNavbar() {
                 let nav = document.getElementById('nav-list-links');
@@ -58,6 +81,22 @@
                 nav.classList.add('hide-nav-animation');
                 this.isModalOpen = false;
                 return;
+            },
+            goTo(link) {
+                Http.redirect(link);
+            },
+            finishSession() {
+                Functions.deleteSessionCookie('login_cookie');
+                Http.redirect('/login');
+            }
+        },
+
+        mounted() {
+            const session_cookie = Functions.getSessionCookie('login_cookie');
+			if (session_cookie) {
+				this.isLogged = true;
+			} else {
+                this.isLogged = false;
             }
         }
     }
@@ -81,7 +120,6 @@
     }
 
     .box-app-logo {
-        width: 10%;
         padding-left: 2%;
     }
     .box-nav-links {
@@ -90,14 +128,9 @@
         justify-content: flex-end;
     }
     .nav-app-links {
-        width: 12%;
-        text-align: center;
+        width: 15%;
+        text-align: right;
         align-self: flex-end;
-    }
-    .nav-app-links:hover {
-        border: solid 2px #1ABC9C;
-        border-radius: 10px;
-        padding: 0.1%;
     }
     .app-logo {
         text-decoration: none;
@@ -108,7 +141,58 @@
     .app-font-navbar {
         text-decoration: none;
         color: var(--text-light);
-        font-family: Arial, Helvetica, sans-serif;
+        font-family:system-ui;
+        font-weight: 600;
+        letter-spacing: 1px;
+        cursor: pointer;
+    }
+    .app-font-navbar:hover {
+        color: var(--app-green-color);
+    }
+
+    .dropdown {
+        position: absolute;
+        width: 10%;
+        margin-left: 5%;
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        margin-top: 0.7rem;
+        background: var(--text-light);
+        z-index: 999;
+        border-radius: 0px 0px 10px 10px;
+        box-shadow: 2px 2px 2px 0px lightgray;
+    }
+
+    .dropdown div {
+        display: flex;
+        align-items: center;
+        column-gap: var(--gap);
+        padding: 0.8rem 1rem;
+        text-decoration: none;
+        color: var(--app-nav-background);
+    }
+
+    .dropdown div img {
+        padding-right: 5%;
+    }
+
+    .dropdown div:hover {
+        background-color: var(--app-nav-background);
+        color: var(--text-light);
+    }
+    .dropdown div img {
+        filter: invert(56%) sepia(35%) saturate(863%) hue-rotate(118deg) brightness(99%) contrast(96%);
+    }
+
+    .show {
+        transform: translateY(0rem);
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .arrow {
+        transform: rotate(180deg);
+        transition: 0.2s ease;
     }
 
     @media screen and (max-width: 900px) {

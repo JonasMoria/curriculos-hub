@@ -188,6 +188,10 @@ const functions = (() => {
       localStorage.setItem(name, value);
     }
 
+    function deleteSessionCookie(name) {
+      localStorage.removeItem(name);
+    }
+
     function getSessionCookie(name) {
       return localStorage.getItem(name);
     }
@@ -210,6 +214,7 @@ const functions = (() => {
         hideSideNav,
         validateRegister,
         setSessionCookie,
+        deleteSessionCookie,
         getSessionCookie,
         getUser,
     }
