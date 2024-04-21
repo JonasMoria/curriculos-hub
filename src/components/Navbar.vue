@@ -16,7 +16,7 @@
                         <img src="/icons/person-info.svg">Perfil
                     </div>
                     <div @click="goTo('')">
-                        <img src="/icons/cv.svg">Curriculos
+                        <img src="/icons/cv.svg">Currículos
                     </div>
                     <div @click="finishSession()">
                         <img src="/icons/close.svg">Encerrar
@@ -41,9 +41,20 @@
             <router-link class="responsive-nav-links app-font-navbar" to="/">
                 Pesquisar
             </router-link>
-            <router-link class="nav-app-links app-font-navbar" to="/" v-if="isLogged">
-                Meu Perfil
-            </router-link>
+            <div class="responsive-nav-links app-font-navbar" v-if="isLogged" @click="showDropDown = !showDropDown">
+                <span class="txt-dropdown"><img src="/icons/expand.svg" class="img-drop-expand">Meu Perfil</span>
+                <div v-show="showDropDown" class="drop-options">
+                    <div class="drop-option" @click="goTo('/user/home')">
+                        <img src="/icons/person-info.svg">Perfil
+                    </div>
+                    <div class="drop-option" @click="goTo('')">
+                        <img src="/icons/cv.svg">Currículos
+                    </div>
+                    <div class="drop-option" @click="finishSession()">
+                        <img src="/icons/close.svg">Encerrar
+                    </div>
+                </div>
+            </div>
             <router-link class="responsive-nav-links app-font-navbar" to="/login" v-if="!isLogged">
                 Login
             </router-link>
@@ -234,6 +245,30 @@
         }
         .hide-nav-animation {
             display: none !important;
+        }
+        .txt-dropdown {
+            color: var(--app-green-color);
+        }
+        .img-drop-expand {
+            vertical-align:middle;
+            height: 25px;
+            filter: invert(56%) sepia(35%) saturate(863%) hue-rotate(118deg) brightness(99%) contrast(96%);
+            padding-left: 2%;
+        }
+        .drop-options {
+            margin-top: 4%;
+            display: flex;
+        }
+        .drop-option {
+            display: inline-block;
+            width: 30%;
+            color: var(--text-light);
+        }
+        .drop-option img {
+            vertical-align: middle;
+            height: 20px;
+            padding-right: 3%;
+            filter: invert(100%) sepia(96%) saturate(15%) hue-rotate(212deg) brightness(104%) contrast(104%);
         }
     }
 </style>
