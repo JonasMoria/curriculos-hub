@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import CurriculumView from '../views/CurriculumView.vue';
 import LoginView from '../views/LoginView.vue';
 import HomeUserView from '@/views/User/HomeView.vue';
+import CvManagementView from '@/views/User/ManagementView';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/user/home',
     name: 'HomeView',
     component: HomeUserView
+  },
+  {
+    path: '/user/management',
+    name: 'ManagementView',
+    component: CvManagementView
   },
 ]
 

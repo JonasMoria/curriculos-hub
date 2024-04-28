@@ -15,7 +15,7 @@
                     <div @click="goTo('/user/home')">
                         <img src="/icons/person-info.svg">Perfil
                     </div>
-                    <div @click="goTo('')">
+                    <div @click="goTo('/user/management')">
                         <img src="/icons/cv.svg">Currículos
                     </div>
                     <div @click="finishSession()">
@@ -47,7 +47,7 @@
                     <div class="drop-option" @click="goTo('/user/home')">
                         <img src="/icons/person-info.svg">Perfil
                     </div>
-                    <div class="drop-option" @click="goTo('')">
+                    <div class="drop-option" @click="goTo('/user/management')">
                         <img src="/icons/cv.svg">Currículos
                     </div>
                     <div class="drop-option" @click="finishSession()">
