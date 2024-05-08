@@ -13,6 +13,7 @@ const request = (() => {
         getCv: 'http://localhost/apicurriculos/api/view',
         register: 'http://localhost/apicurriculos/api/register',
         login: 'http://localhost/apicurriculos/api/login',
+        newCv: 'http://localhost/apicurriculos/curriculum/new',
     }
 
     var codes = {
@@ -38,16 +39,27 @@ const request = (() => {
         return response;
     }
 
-    async function post(url, data) {
+    async function post(url, data, tokenAuth = null) {
         const params = JSON.stringify(data);
+        let api_headers = {};
+
+        if (tokenAuth) {
+            api_headers = {
+                "Access-Control-Request-Headers": "Content-Type",
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${tokenAuth}`,
+            };
+        } else {
+            api_headers = {
+                "Access-Control-Request-Headers": "Content-Type",
+                "Content-Type": "application/json",
+            };
+        }
 
         const request = await fetch(url, {
             method: 'POST',
             body: params,
-            headers: {
-                "Access-Control-Request-Headers": "Content-Type",
-                "Content-Type": "application/json",
-            },
+            headers: api_headers,
         });
 
         const response = request.json();

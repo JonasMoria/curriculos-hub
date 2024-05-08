@@ -1,5 +1,11 @@
 <template>
     <section class="new-cv-content glow-effect">
+        <div class="error-box" v-if="error_msg">
+            <p>Ops! {{ error_msg }}</p>
+        </div>
+        <div class="success-box" v-if="msg_success">
+            <p>{{ msg_success }}</p>
+        </div>
         <div class="form-group cv-header">
             <label><b>Nome do currículo</b></label>
             <input type="text" v-model="curriculum.curriculum_name">
@@ -47,13 +53,11 @@
                 <div class="form-group form-inline mb-1">
                     <div class="form-medium">
                         <label><b>Contato Principal <span class="required">*</span></b></label>
-                        <input type="text" v-model="curriculum.personal_contact.phones.principal"
-                            @change="maskPhones(1)">
+                        <input type="text" v-model="curriculum.personal_contact.phones.principal">
                     </div>
                     <div class="form-medium">
                         <label><b>Contato Secundário</b></label>
-                        <input type="text" v-model="curriculum.personal_contact.phones.secondary"
-                            @change="maskPhones()">
+                        <input type="text" v-model="curriculum.personal_contact.phones.secondary">
                     </div>
                 </div>
                 <div class="form-group form-inline mb-1">
@@ -131,7 +135,7 @@
                 </div>
             </div>
             <div class="w-100 btn-new-cv">
-                <button type="button" @click="register()">Cadastrar</button>
+                <button type="button" id="btn-send" @click="register()">Cadastrar</button>
             </div>
         </div>
     </section>
@@ -145,6 +149,7 @@
 
 <script>
 import Functions from '../../assets/js/Functions';
+import Http from '../../assets/js/Http';
 import ModalEducationVue from '../Modals/modalEducation.vue';
 import ModalExperienceVue from '../Modals/modalExperience.vue';
 import ModalSkillsLangs from '../Modals/modalSkillsLangs.vue';
@@ -157,6 +162,8 @@ export default {
             showModalEducation: false,
             showModalExperience: false,
             showModalSkillsLangs: false,
+            error_msg: '',
+            msg_success: '',
 
             curriculum: {
                 curriculum_name: '',
@@ -260,17 +267,46 @@ export default {
             }
         },
         register() {
-            console.log(this.curriculum);
+            const api_url = Http.urls.newCv;
+            const tokenAuth = Functions.getSessionCookie('login_cookie');
+            this.showLoadingButton('btn-send');
+
+            const response = Http.post(api_url, this.curriculum, tokenAuth);
+            response.then((json) => {
+                this.showLoadingButton('btn-send', 'Cadastrar');
+
+                if (json.status == Http.codes.bad_request) {
+                    this.error_msg = json.message;
+                    this.msg_success = '';
+                }
+                if (json.status == Http.codes.created) {
+                    this.msg_success = json.message;
+                    this.error_msg = '';
+                }
+            }).catch((error) => {
+                this.showLoadingButton('btn-send', 'Cadastrar');
+                this.error_msg = 'Não foi possível cadastrar seu currículo agora, por favor, tente novamente mais tarde';
+            });
+
         },
         maskPhones(type) {
             if (type == 1) {
-                this.curriculum.personal_contact.phones.principal = Functions.mask(this.curriculum.personal_contact.phones.principal, '(##) #########');
+                this.curriculum.personal_contact.phones.principal = Functions.mask(this.curriculum.personal_contact.phones.principal, '+## (##) #########');
                 return;
             }
 
-            this.curriculum.personal_contact.phones.secondary = Functions.mask(this.curriculum.personal_contact.phones.secondary, '(##) #########');
+            this.curriculum.personal_contact.phones.secondary = Functions.mask(this.curriculum.personal_contact.phones.secondary, '+## (##) #########');
             return;
-        }
+        },
+        showLoadingButton(btnId, btnHtml = '') {
+            let btn = document.getElementById(btnId);
+            if (btnHtml) {
+                btn.innerHTML = `${btnHtml}`;
+                return;
+            }
+            btn.innerHTML = `<div class="loader" style="margin-left: 40%"></div>`;
+            return;
+        },
     }
 }
 </script>
@@ -441,6 +477,31 @@ export default {
     margin-right: 10px;
 }
 
+.error-box,
+.success-box {
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 5%;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    font-family: system-ui;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.error-box {
+    border: 1px solid #E74C3C;
+    background-color: #E74C3C;
+}
+
+.success-box {
+    border: 1px solid var(--app-green-color);
+    background-color: var(--app-green-color);
+}
+
 .w-30 {
     width: 30%;
 }
@@ -523,9 +584,16 @@ export default {
     }
 
     .card-dinamic span,
-    .card-dinamic button  {
+    .card-dinamic button {
         font-size: 10px;
         margin-top: 1%
+    }
+
+    .error-box,
+    .success-box {
+        width: 98%;
+        margin-left: 2%;
+        font-size: 8px;
     }
 }
 </style>
