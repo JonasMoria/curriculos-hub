@@ -1,4 +1,8 @@
 <template>
+    <section class="page-title">
+        <h1>Novo Currículo</h1>
+        <button @click="$emit('pageMyCvs')">Meus Currículos</button>
+    </section>
     <section class="new-cv-content glow-effect">
         <div class="error-box" v-if="error_msg">
             <p>Ops! {{ error_msg }}</p>
@@ -157,6 +161,8 @@ import ModalSkillsLangs from '../Modals/modalSkillsLangs.vue';
 export default {
     name: 'NewCurriculum',
     components: { ModalEducationVue, ModalExperienceVue, ModalSkillsLangs },
+    emits: ['pageMyCvs'],
+
     data() {
         return {
             showModalEducation: false,
@@ -312,6 +318,25 @@ export default {
 </script>
 
 <style scoped>
+.page-title {
+    width: 100%;
+    border-bottom: 1px solid var(--app-nav-background);
+    margin: 2% 0%;
+}
+.page-title h1 {
+    font-family: system-ui;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+.page-title button {
+    float: right;
+    background-color: transparent;
+    border: none;
+    font-family: system-ui;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 .new-cv-content {
     background-color: var(--app-white-background);
     padding: 1%;

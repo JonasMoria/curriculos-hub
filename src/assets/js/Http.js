@@ -7,31 +7,45 @@ const request = (() => {
     const NOT_FOUND = 404;
 
     const app_url = 'http://localhost:8080';
+    const api_url = 'http://localhost';
 
     var urls = {
-        search: 'http://localhost/apicurriculos/api/search',
-        getCv: 'http://localhost/apicurriculos/api/view',
-        register: 'http://localhost/apicurriculos/api/register',
-        login: 'http://localhost/apicurriculos/api/login',
-        newCv: 'http://localhost/apicurriculos/curriculum/new',
+        search: api_url + '/apicurriculos/api/search',
+        getCv: api_url + '/apicurriculos/api/view',
+        register: api_url + '/apicurriculos/api/register',
+        login: api_url + '/apicurriculos/api/login',
+        newCv: api_url + '/apicurriculos/curriculum/new',
+        listUserCvs: api_url + '/apicurriculos/curriculum/list'
     }
 
     var codes = {
-        ok : 200,
+        ok: 200,
         created: 201,
-        not_found : 404,
+        not_found: 404,
         bad_request: 400,
         unauthorized: 401,
         error: 500,
     }
 
-    async function get(url) {
-        const request = await fetch(url, {
-            method: 'GET',
-            headers: {
+    function getRequestHeader(tokenAuth) {
+        if (tokenAuth) {
+            return {
                 "Access-Control-Request-Headers": "Content-Type",
                 "Content-Type": "application/json",
-            },
+                "Authorization": `Bearer ${tokenAuth}`,
+            };
+        }
+
+        return {
+            "Access-Control-Request-Headers": "Content-Type",
+            "Content-Type": "application/json",
+        }
+    }
+
+    async function get(url, tokenAuth = '') {
+        const request = await fetch(url, {
+            method: 'GET',
+            headers: getRequestHeader(tokenAuth),
         });
 
         const response = request.json();
@@ -41,29 +55,15 @@ const request = (() => {
 
     async function post(url, data, tokenAuth = null) {
         const params = JSON.stringify(data);
-        let api_headers = {};
-
-        if (tokenAuth) {
-            api_headers = {
-                "Access-Control-Request-Headers": "Content-Type",
-                "Content-Type": "application/json",
-                "Authorization" : `Bearer ${tokenAuth}`,
-            };
-        } else {
-            api_headers = {
-                "Access-Control-Request-Headers": "Content-Type",
-                "Content-Type": "application/json",
-            };
-        }
 
         const request = await fetch(url, {
             method: 'POST',
             body: params,
-            headers: api_headers,
+            headers: getRequestHeader(tokenAuth),
         });
 
         const response = request.json();
-        
+
         return response;
     }
 

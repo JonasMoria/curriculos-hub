@@ -158,7 +158,7 @@
             if (this.curriculum_id) {
                 this.getCurriculum();
             } else {
-                this.curriculum_id = 3;
+                this.curriculum_id = null;
             }
         }
     }

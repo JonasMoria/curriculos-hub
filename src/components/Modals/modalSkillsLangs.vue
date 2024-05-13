@@ -1,7 +1,7 @@
 <template>
     <section class="modal">
         <div class="modal-header">
-            <button class="btn-close" @click="$emit('closeModal', 1)">⨉</button>
+            <button class="btn-close" @click="$emit('closeModal', 3)">⨉</button>
         </div>
         <div class="modal-body">
             <div class="modal-form">
