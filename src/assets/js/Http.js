@@ -15,7 +15,8 @@ const request = (() => {
         register: api_url + '/apicurriculos/api/register',
         login: api_url + '/apicurriculos/api/login',
         newCv: api_url + '/apicurriculos/curriculum/new',
-        listUserCvs: api_url + '/apicurriculos/curriculum/list'
+        listUserCvs: api_url + '/apicurriculos/curriculum/list',
+        deleteCv: api_url + '/apicurriculos/curriculum/delete/'
     }
 
     var codes = {
@@ -67,8 +68,15 @@ const request = (() => {
         return response;
     }
 
-    function del() {
+    async function del(url, tokenAuth) {
+        const request = await fetch(url, {
+            method: 'DELETE',
+            headers: getRequestHeader(tokenAuth),
+        });
 
+        const response = request.json();
+
+        return response;
     }
 
     function put() {
