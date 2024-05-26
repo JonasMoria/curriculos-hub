@@ -18,8 +18,7 @@
                 <span>Última atualização: {{ cv.curriculum_last_update }}</span>
             </div>
             <div class="cv-btns">
-                <img src="/icons/edit.svg" class="btn-edit" title="editar">
-                <img src="/icons/close.svg" class="btn-delete" title="remover"
+                <img src="/icons/close.svg" class="btn-delete" title="Remover"
                     @click="manageModal(1, cv.curriculum_id, index)">
             </div>
         </div>

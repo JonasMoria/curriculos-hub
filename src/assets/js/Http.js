@@ -16,7 +16,10 @@ const request = (() => {
         login: api_url + '/apicurriculos/api/login',
         newCv: api_url + '/apicurriculos/curriculum/new',
         listUserCvs: api_url + '/apicurriculos/curriculum/list',
-        deleteCv: api_url + '/apicurriculos/curriculum/delete/'
+        deleteCv: api_url + '/apicurriculos/curriculum/delete/',
+        viewPerfil: api_url + '/apicurriculos/perfil/view',
+        updatePerfil: api_url + '/apicurriculos/perfil/update',
+        deletePerfil: api_url + '/apicurriculos/perfil/delete',
     }
 
     var codes = {
@@ -79,8 +82,18 @@ const request = (() => {
         return response;
     }
 
-    function put() {
+    async function put(url, data, tokenAuth) {
+        const params = JSON.stringify(data);
 
+        const request = await fetch(url, {
+            method: 'PUT',
+            body: params,
+            headers: getRequestHeader(tokenAuth),
+        });
+
+        const response = request.json();
+
+        return response;
     }
 
     function getUrlParam() {
