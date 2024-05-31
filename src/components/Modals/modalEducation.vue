@@ -91,7 +91,7 @@ export default {
 
             this.$emit('addEducation', education);
         },
-        checkEducation() {
+        checkEducation: function() {
             if (!this.acronym || this.acronym.trim() == '') {
                 this.msg_error = 'Preencha a sigla do curso (ex: ADM)';
                 return false;

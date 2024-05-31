@@ -201,41 +201,41 @@ export default {
         }
     },
     methods: {
-        newEducation(education) {
+        newEducation: function(education) {
             Object.assign(this.curriculum.personal_education, education);
             this.showModalEducation = false;
         },
-        removeEducation(index) {
+        removeEducation: function(index) {
             delete this.curriculum.personal_education[index];
         },
-        newExperience(experience) {
+        newExperience: function(experience) {
             Object.assign(this.curriculum.personal_experience, experience);
             this.showModalExperience = false;
         },
-        removeExperience(index) {
+        removeExperience: function(index) {
             delete this.curriculum.personal_experience[index];
         },
-        newLang(lang) {
+        newLang: function(lang) {
             this.curriculum.personal_languages.push(lang);
             this.showModalSkillsLangs = false;
         },
-        removeLang(element) {
+        removeLang: function(element) {
             const idx = this.curriculum.personal_languages.indexOf(element);
             if (idx >= 0) {
                 this.curriculum.personal_languages.splice(element, 1);
             }
         },
-        newSkill(skill) {
+        newSkill: function(skill) {
             this.curriculum.personal_skills.push(skill);
             this.showModalSkillsLangs = false;
         },
-        removeSkill(element) {
+        removeSkill: function(element) {
             const idx = this.curriculum.personal_skills.indexOf(element);
             if (idx >= 0) {
                 this.curriculum.personal_skills.splice(element, 1);
             }
         },
-        fixDate(date, status) {
+        fixDate: function(date, status) {
             if (date == '' && status == 0) {
                 return 'trancado';
             }
@@ -245,7 +245,7 @@ export default {
 
             return Functions.convertDataToBrazil(date);
         },
-        getLabelEducStatus(status) {
+        getLabelEducStatus: function(status) {
             switch (status) {
                 case 0:
                     return 'incompleto';
@@ -257,7 +257,7 @@ export default {
                     return '';
             }
         },
-        manageModal(typeModal) {
+        manageModal: function(typeModal) {
             switch (typeModal) {
                 case 1:
                     this.showModalEducation = !this.showModalEducation;
@@ -272,7 +272,7 @@ export default {
                     break;
             }
         },
-        register() {
+        register: function() {
             const api_url = Http.urls.newCv;
             const tokenAuth = Functions.getSessionCookie('login_cookie');
             this.showLoadingButton('btn-send');
@@ -295,7 +295,7 @@ export default {
             });
 
         },
-        maskPhones(type) {
+        maskPhones: function(type) {
             if (type == 1) {
                 this.curriculum.personal_contact.phones.principal = Functions.mask(this.curriculum.personal_contact.phones.principal, '+## (##) #########');
                 return;
@@ -304,7 +304,7 @@ export default {
             this.curriculum.personal_contact.phones.secondary = Functions.mask(this.curriculum.personal_contact.phones.secondary, '+## (##) #########');
             return;
         },
-        showLoadingButton(btnId, btnHtml = '') {
+        showLoadingButton: function(btnId, btnHtml = '') {
             let btn = document.getElementById(btnId);
             if (btnHtml) {
                 btn.innerHTML = `${btnHtml}`;

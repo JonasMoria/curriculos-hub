@@ -74,7 +74,7 @@ export default {
 
             this.$emit('addExperience', experience);
         },
-        checkExperience() {
+        checkExperience: function() {
             if (!this.enterpriseName || this.enterpriseName.trim() == '') {
                 this.msg_error = 'Preencha o nome da empresa';
                 return false;

@@ -107,7 +107,7 @@
         },
 
         methods: {
-            getCurriculum() {
+            getCurriculum: function() {
                 this.search_status = 1;
 
                 const url = `${Http.urls.getCv}/${this.curriculum_id}`;
@@ -128,7 +128,7 @@
                     this.search_status = 4;
                 });
             },
-            setSizeQrCode() {
+            setSizeQrCode: function() {
                 const windowSize = window.innerWidth;
                 if (windowSize <= 900) {
                     return 30;
@@ -136,7 +136,7 @@
 
                 return 100;
             },
-            setMasks() {
+            setMasks: function() {
                 this.curriculum.personal_info.birthdate = Functions.convertDataToBrazil(this.curriculum.personal_info.birthdate);
                 this.curriculum.personal_contact.phones.principal = Functions.mask(this.curriculum.personal_contact.phones.principal, '+## (##) #########');
                 this.curriculum.personal_contact.phones.secondary = Functions.mask(this.curriculum.personal_contact.phones.secondary, '+## (##) #########');

@@ -73,15 +73,15 @@
         },
 
         methods: {
-            showLogin() {
+            showLogin: function() {
                 const container = document.getElementById('container');
                 container.classList.remove("right-panel-active");
             },
-            showRegister() {
+            showRegister: function() {
                 const container = document.getElementById('container');
                 container.classList.add("right-panel-active");
             },
-			showLoadingButton(btnId, btnHtml = '') {
+			showLoadingButton: function(btnId, btnHtml = '') {
 				let btn = document.getElementById(btnId);
 				if (btnHtml) {
 					btn.innerHTML = `${btnHtml}`;
@@ -90,7 +90,7 @@
 				btn.innerHTML = `<div class="loader"></div>`;
 				return;
 			},
-			login() {
+			login: function() {
 				this.loginError = '';
 				this.showLoadingButton('btn-login');
 
@@ -115,7 +115,7 @@
 				});
 
 			},
-			register() {
+			register: function() {
 				this.registerError = '';
 				this.showLoadingButton('btn-register');
 

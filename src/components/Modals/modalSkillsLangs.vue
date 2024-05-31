@@ -44,7 +44,7 @@ export default {
     },
 
     methods: {
-        insertHab: function () {
+        insertHab: function() {
             let checkForm = this.checkSkill();
             if (checkForm == false) {
                 this.msg_error == checkForm;
@@ -59,7 +59,7 @@ export default {
             }
 
         },
-        checkSkill() {
+        checkSkill: function() {
             if (!this.typeHability || this.typeHability == 404) {
                 this.msg_error = 'Selecione o tipo de habilidade';
                 return false;

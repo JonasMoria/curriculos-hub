@@ -1,19 +1,8 @@
-# curriculos-hub
+# Curriculos-hub
 
-## Project setup
-```
-npm install
-```
+Site para cadastro, consulta e gerenciamento de currículos online. Com a CurriculosHub você pode armazenar seu currículo em nossa base de dados, além disso, pesquisar por diversos currículos baseados em filtros específicos oferecidos pela plataforma.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Dependências
+- Vue versão 3.0.
+- VueRouter.
+- Back-end: API-Curriculos (disponível em: https://github.com/JonasMoria/apicurriculos).

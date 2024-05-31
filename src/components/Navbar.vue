@@ -78,7 +78,7 @@
         },
 
         methods: {
-            openNavbar() {
+            openNavbar: function() {
                 let nav = document.getElementById('nav-list-links');
                 if (this.isModalOpen == false) {
                     nav.classList.remove('hide-nav-animation');
@@ -93,10 +93,10 @@
                 this.isModalOpen = false;
                 return;
             },
-            goTo(link) {
+            goTo: function(link) {
                 Http.redirect(link);
             },
-            finishSession() {
+            finishSession: function() {
                 Functions.deleteSessionCookie('login_cookie');
                 Http.redirect('/login');
             }

@@ -145,7 +145,7 @@
       },
 
       methods: {
-        sideNavManager() {
+        sideNavManager: function() {
           if (this.sidenav_hide == false) {
             Functions.hideSideNav(this.$el);
             this.sidenav_hide = true;
@@ -156,10 +156,10 @@
           this.sidenav_hide = false
           return;
         },
-        setJsonSearch() {
+        setJsonSearch: function() {
           this.json_search = search();
         },
-        addFilter() {
+        addFilter: function() {
           if (this.search == '') {
             return;
           }
@@ -173,13 +173,13 @@
         deleteFilter(array, index) {
           array.splice(index, 1);
         },
-        setPlaceHolder() {
+        setPlaceHolder: function() {
             this.placeholder = Functions.addPlaceHolderSearch(this.category);
         },
-        clearFilters() {
+        clearFilters: function() {
             this.search = '';
         },
-        getCurriculums() {
+        getCurriculums: function() {
           this.search_status = 1;
 
           const response = Http.post(Http.urls.search, this.filters);

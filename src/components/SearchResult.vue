@@ -62,7 +62,7 @@
         },
 
         methods: {
-            viewCv(id) {
+            viewCv: function(id) {
                 window.location.href = `${Http.app_url}/view/${id}`;
             }
         }
